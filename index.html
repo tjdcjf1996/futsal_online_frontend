@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Futsal Online</title>
+    <link rel="stylesheet" href="./css/index.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Futsal Online</h1>
+      </div>
+    </header>
+    <nav>
+      <a style="position: absolute" id="welcome"></a>
+      <ul>
+        <li>
+          <a href="#players" onclick="showSection('players')">선수 목록</a>
+        </li>
+        <li>
+          <a href="#upgrade" onclick="showSection('upgrade')">선수 강화</a>
+        </li>
+        <li><a href="#shop" onclick="showSection('shop')">상점</a></li>
+        <li><a onclick="logout()">로그아웃</a></li>
+      </ul>
+    </nav>
+    <div class="container">
+      <section id="players" class="content">
+        <h2>선수 목록</h2>
+        <div class="player-list"></div>
+      </section>
+
+      <!-- 모달 구조 추가 -->
+      <div id="modal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2 id="modal-title"></h2>
+          <p>포지션: <span id="modal-position"></span></p>
+          <p>능력치: <span id="modal-stats"></span></p>
+        </div>
+      </div>
+
+      <section id="upgrade" class="content" style="display: none">
+        <h2>선수 강화</h2>
+        <div class="upgrade-section">
+          <div class="upgrade-card">
+            <h3>선수 선택</h3>
+            <select>
+              <option>홍길동 (85)</option>
+              <option>김철수 (82)</option>
+              <option>이영희 (80)</option>
+            </select>
+            <button>강화하기</button>
+          </div>
+        </div>
+      </section>
+      <section id="shop" class="content" style="display: none">
+        <h2>상점</h2>
+        <div class="shop-section">
+          <div class="shop-item">
+            <img src="./assets/playerPack.PNG" alt="에너지 드링크" />
+            <h3>에너지 드링크</h3>
+            <p>가격: 500 코인</p>
+            <button>구매하기</button>
+          </div>
+        </div>
+      </section>
+    </div>
+    <script src="./js/index.js"></script>
+    <script src="./js/players.js"></script>
+  </body>
+</html>
