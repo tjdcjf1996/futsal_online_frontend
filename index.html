@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Futsal Online</title>
     <link rel="stylesheet" href="./css/index.css" />
+    <link rel="stylesheet" href="./css/upgrade.css" />
   </head>
   <body>
     <header>
@@ -26,48 +27,71 @@
       </ul>
     </nav>
     <div class="container">
-      <section id="players" class="content">
+      <section id="players" class="content" style="display: none">
         <h2>선수 목록</h2>
         <div class="player-list"></div>
-      </section>
-
-      <!-- 모달 구조 추가 -->
-      <div id="modal" class="modal">
-        <div class="modal-content">
-          <span class="close">&times;</span>
-          <h2 id="modal-title"></h2>
-          <p>포지션: <span id="modal-position"></span></p>
-          <p>능력치: <span id="modal-stats"></span></p>
+        <!-- 모달 -->
+        <div id="playerModal" class="modal">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 id="modalPlayerName"></h3>
+            <p id="modalPlayerStats"></p>
+            <p id="modalPlayerSpeed"></p>
+            <p id="modalPlayerFinishing"></p>
+            <p id="modalPlayerShootPower"></p>
+            <p id="modalPlayerDefense"></p>
+            <p id="modalPlayerStamina"></p>
+          </div>
         </div>
-      </div>
+      </section>
 
       <section id="upgrade" class="content" style="display: none">
         <h2>선수 강화</h2>
         <div class="upgrade-section">
           <div class="upgrade-card">
             <h3>선수 선택</h3>
-            <select>
-              <option>홍길동 (85)</option>
-              <option>김철수 (82)</option>
-              <option>이영희 (80)</option>
+            <select id="playerSelect">
+              <option value="">선수를 선택하세요</option>
             </select>
-            <button>강화하기</button>
+            <div class="gauge-container">
+              <div id="upgradeGauge"></div>
+            </div>
+            <button id="upgradeButton">강화하기</button>
+            <p id="upgradeResult"></p>
           </div>
         </div>
       </section>
       <section id="shop" class="content" style="display: none">
+        <div style="text-align: left">
+          <div class="cash_child">
+            <a id="cashBalance"></a>
+          </div>
+          <div class="cash_child">
+            <button id="chargeButton">캐쉬충전</button>
+          </div>
+        </div>
+
         <h2>상점</h2>
         <div class="shop-section">
           <div class="shop-item">
-            <img src="./assets/playerPack.PNG" alt="에너지 드링크" />
-            <h3>에너지 드링크</h3>
-            <p>가격: 500 코인</p>
-            <button>구매하기</button>
+            <img src="./assets/playerPack.PNG" alt="쩌는 선수팩" />
+            <h3>쩌는 선수팩</h3>
+            <p>가격: 100원</p>
+            <button id="buyPlayerPack">구매하기</button>
           </div>
+          <!-- 모달 -->
+        <div id="playerCardModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <h2 id="playerCardName"></h2>
+              <p>축하합니다! 위 선수를 획득하셨습니다.</p>
+            </div>
         </div>
       </section>
     </div>
     <script src="./js/index.js"></script>
     <script src="./js/players.js"></script>
+    <script src="./js/upgrade.js"></script>
+    <script src="./js/shop.js"></script>
   </body>
 </html>

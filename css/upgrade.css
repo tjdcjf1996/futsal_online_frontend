@@ -1,0 +1,80 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #1a202c;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.content {
+  background-color: #2d3748;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+h2 {
+  color: #63b3ed;
+}
+.upgrade-section,
+.shop-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.upgrade-card,
+.shop-item {
+  background-color: #4a5568;
+  border-radius: 8px;
+  padding: 15px;
+  width: calc(33.333% - 20px);
+  box-sizing: border-box;
+}
+select,
+button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 4px;
+}
+select {
+  background-color: #2d3748;
+  color: #ffffff;
+}
+button {
+  background-color: #4299e1;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+button:hover {
+  background-color: #3182ce;
+}
+.gauge-container {
+  width: 100%;
+  height: 20px;
+  background-color: #2d3748;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+#upgradeGauge {
+  width: 0;
+  height: 100%;
+  background-color: #48bb78;
+  transition: width 0.3s;
+}
+#upgradeResult {
+  margin-top: 10px;
+  font-weight: bold;
+  text-align: center;
+}
+img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}

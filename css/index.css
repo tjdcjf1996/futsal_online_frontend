@@ -109,10 +109,11 @@ button:hover {
 
 .modal-content {
   background-color: #fff; /* 모달 배경 색상 */
+  color: #1a202c;
   margin: 15% auto; /* 중앙 정렬 */
   padding: 20px;
   border: 1px solid #888;
-  width: 80%; /* 너비 설정 */
+  width: 20%; /* 너비 설정 */
   border-radius: 8px; /* 모서리 둥글게 */
 }
 
@@ -128,4 +129,9 @@ button:hover {
   color: black; /* 마우스 오버 시 색상 변경 */
   text-decoration: none;
   cursor: pointer;
+}
+
+.cash_child {
+  display: inline-block;
+  padding-right: 10px;
 }

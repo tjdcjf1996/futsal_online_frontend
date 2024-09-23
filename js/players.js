@@ -1,31 +1,3 @@
-// 모달 표시 함수
-function showPlayerDetails(player) {
-  document.getElementById("modal-title").textContent = player.playerName;
-  document.getElementById("modal-position").textContent =
-    player.position || "포지션 정보 없음"; // 포지션 정보 처리
-  document.getElementById("modal-stats").textContent = player.powerLevel;
-
-  const modal = document.getElementById("modal");
-  modal.style.display = "block";
-}
-
-// 모달 닫기 함수
-function closeModal() {
-  document.getElementById("modal").style.display = "none";
-}
-
-// 모달 닫기 이벤트 등록
-document.querySelector(".close").onclick = closeModal;
-
-// 모달 외부 클릭 시 닫기
-window.onclick = function (event) {
-  const modal = document.getElementById("modal");
-  if (event.target === modal) {
-    closeModal(); // 모달 숨기기
-  }
-};
-
-// 페이지 로드 시 선수 목록을 가져오기
 window.addEventListener("DOMContentLoaded", async function () {
   const token = localStorage.getItem("token");
   const userID = localStorage.getItem("userID");
@@ -43,21 +15,80 @@ window.addEventListener("DOMContentLoaded", async function () {
     const playerList = document.querySelector(".player-list");
     playerList.innerHTML = ""; // 기존 내용 제거
 
+    // 모달 관련 요소 가져오기
+    const modal = document.getElementById("playerModal");
+    const modalPlayerName = document.getElementById("modalPlayerName");
+    const modalPlayerStats = document.getElementById("modalPlayerStats");
+    const modalPlayerSpeed = document.getElementById("modalPlayerSpeed");
+    const modalPlayerFinishing = document.getElementById(
+      "modalPlayerFinishing"
+    );
+    const modalPlayerShootPower = document.getElementById(
+      "modalPlayerShootPower"
+    );
+    const modalPlayerDefense = document.getElementById("modalPlayerDefense");
+    const modalPlayerStamina = document.getElementById("modalPlayerStamina");
+    const closeModal = document.querySelector(".close");
+
+    // 각 선수에 대해 추가 fetch 요청을 병렬로 실행
+    const playerDetailsPromises = fetchData.data.map(async (player) => {
+      const playerResponse = await fetch(
+        `http://localhost:8282/api/player/${player.playerID}`, // playerID로 상세 정보 가져옴
+        {
+          method: "GET",
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+
+      if (!playerResponse.ok) throw new Error("선수 상세 정보 불러오기 실패");
+
+      const playerDetails = await playerResponse.json();
+      return {
+        ...player, // gacha의 player 데이터
+        details: playerDetails.data, // player의 상세 정보 추가
+      };
+    });
+
+    // 모든 fetch가 완료되면 결과를 받아 처리
+    const playersWithDetails = await Promise.all(playerDetailsPromises);
+
     // 선수 목록 생성
-    fetchData.data.forEach((player) => {
+    playersWithDetails.forEach((player) => {
       const playerItem = document.createElement("div");
       playerItem.classList.add("player-item");
-      playerItem.setAttribute("data-name", player.playerName);
-      playerItem.setAttribute("data-stats", player.powerLevel);
-      playerItem.innerHTML = `
-        <h3>${player.playerName}</h3>
-        <p>능력치: ${player.powerLevel}</p>
-      `;
 
-      // 클릭 시 상세 정보 표시
-      playerItem.addEventListener("click", () => showPlayerDetails(player));
+      playerItem.innerHTML = `
+          <h3>${player.playerName}</h3>
+          <p>능력치: ${player.powerLevel}</p>
+        `;
+
+      // 클릭 시 모달 열기
+      playerItem.addEventListener("click", () => {
+        modalPlayerName.innerText = player.playerName;
+        modalPlayerStats.innerText = `능력치: ${player.powerLevel}`;
+        modalPlayerSpeed.innerText = `스피드: ${player.details.speed}`;
+        modalPlayerFinishing.innerText = `골 결정력: ${player.details.finishing}`;
+        modalPlayerShootPower.innerText = `슛 파워: ${player.details.shootPower}`;
+        modalPlayerDefense.innerText = `수비력: ${player.details.defense}`;
+        modalPlayerStamina.innerText = `스태미너: ${player.details.stamina}`;
+        modal.style.display = "block"; // 모달 표시
+      });
 
       playerList.appendChild(playerItem);
+    });
+
+    // 닫기 버튼 클릭 시 모달 닫기
+    closeModal.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+
+    // 모달 바깥을 클릭 시 모달 닫기
+    window.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
     });
   } catch (error) {
     console.error("데이터 로드 실패:", error);
