@@ -69,13 +69,13 @@ window.addEventListener("section-players", async function () {
 
       playerItem.innerHTML = `
           <h3>${player.playerName}</h3>
-          <p>능력치: ${player.powerLevel}</p>
+          <p>강화 수치: ${player.powerLevel}</p>
         `;
 
       // 클릭 시 모달 열기
       playerItem.addEventListener("click", () => {
         modalPlayerName.innerText = player.playerName;
-        modalPlayerStats.innerText = `능력치: ${player.powerLevel}`;
+        modalPlayerStats.innerText = `강화 수치: ${player.powerLevel}`;
         modalPlayerSpeed.innerText = `스피드: ${player.details.speed}`;
         modalPlayerFinishing.innerText = `골 결정력: ${player.details.finishing}`;
         modalPlayerShootPower.innerText = `슛 파워: ${player.details.shootPower}`;

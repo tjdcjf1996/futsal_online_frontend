@@ -1,96 +1,111 @@
-const PlayerUpgrade = (async () => {
-  const playerSelect = document.getElementById("playerSelect");
-  const upgradeGauge = document.getElementById("upgradeGauge");
-  const upgradeButton = document.getElementById("upgradeButton");
-  const upgradeResult = document.getElementById("upgradeResult");
-  const userID = localStorage.getItem("userID");
+const fetchEquippedPlayers = async (token) => {
+  const response = await fetch("http://localhost:8282/api/auth/myteam", {
+    method: "GET",
+    headers: {
+      Authorization: `${token}`,
+    },
+  });
+
+  if (!response.ok)
+    throw new Error("장착 선수 목록을 불러오는 데 실패했습니다.");
+  return response.json();
+};
+
+const fetchPlayerDetails = async (playerID, token) => {
+  const response = await fetch(`http://localhost:8282/api/player/${playerID}`, {
+    method: "GET",
+    headers: {
+      Authorization: `${token}`,
+    },
+  });
+
+  if (!response.ok)
+    throw new Error("선수 상세 정보를 불러오는 데 실패했습니다.");
+  return response.json();
+};
+
+const loadEquippedPlayersWithDetails = async (token) => {
+  const myteamList = await fetchEquippedPlayers(token);
+
+  const playerDetailsPromises = myteamList.data.map((player) =>
+    fetchPlayerDetails(player.playerID, token).then((details) => ({
+      ...player,
+      detail: details.data,
+    }))
+  );
+
+  return Promise.all(playerDetailsPromises);
+};
+
+const upgradePlayer = async (playerID, powerLevel, token) => {
+  const response = await fetch("http://localhost:8282/api/user/upgrade", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `${token}`,
+    },
+    body: JSON.stringify({ playerID: +playerID, powerLevel: +powerLevel }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json(); // 에러 내용을 JSON 형식으로 파싱
+    throw new Error(error.message || "강화에 실패했습니다."); // 에러 메시지가 있으면 사용하고, 없으면 기본 메시지 사용
+  }
+  return response.json();
+};
+
+const populatePlayerSelect = async () => {
   const token = localStorage.getItem("token");
 
   try {
-    const response = await fetch(`http://localhost:8282/api/gacha/${userID}`, {
-      method: "GET",
-      headers: {
-        Authorization: `${token}`,
-      },
+    const players = await loadEquippedPlayersWithDetails(token);
+    const playerSelect = document.getElementById("playerSelect");
+    playerSelect.innerHTML = "";
+    players.forEach((player) => {
+      const option = document.createElement("option");
+      option.value = player.playerID;
+      option.textContent = `${player.detail.playerName} (레벨: ${player.powerLevel})`;
+      playerSelect.appendChild(option);
     });
-
-    if (!response.ok) throw new Error("네트워크 오류 발생");
-
-    let players = await response.json();
-    let selectedPlayer = null;
-    let upgradeLevel = 0;
-
-    const renderPlayers = () => {
-      playerSelect.innerHTML = '<option value="">선수를 선택하세요</option>';
-      players.data.forEach((player) => {
-        const option = document.createElement("option");
-        option.value = player.opID;
-        option.textContent = `${player.playerName} (${player.powerLevel})`;
-        playerSelect.appendChild(option);
-      });
-    };
-
-    const resetUpgrade = () => {
-      upgradeLevel = 0;
-      upgradeGauge.style.width = "0%";
-      upgradeButton.textContent = "강화하기";
-    };
-
-    const increaseUpgrade = () => {
-      if (upgradeLevel < 100) {
-        upgradeLevel += 10;
-        upgradeGauge.style.width = `${upgradeLevel}%`;
-        upgradeButton.textContent =
-          upgradeLevel === 100 ? "강화 완료!" : `강화중... ${upgradeLevel}%`;
-      }
-    };
-
-    const performUpgrade = () => {
-      if (selectedPlayer && upgradeLevel === 100) {
-        const success = Math.random() < 0.7; // 70% 성공 확률
-        if (success) {
-          selectedPlayer.level++;
-          selectedPlayer.stats += Math.floor(Math.random() * 5) + 1;
-          upgradeResult.textContent = "강화 성공!";
-          upgradeResult.style.color = "#48bb78";
-        } else {
-          upgradeResult.textContent = "강화 실패...";
-          upgradeResult.style.color = "#f56565";
-        }
-        renderPlayers();
-        resetUpgrade();
-      }
-    };
-
-    const init = () => {
-      renderPlayers();
-
-      playerSelect.addEventListener("change", (e) => {
-        selectedPlayer = players.data.find(
-          (p) => p.opID === parseInt(e.target.value)
-        );
-        resetUpgrade();
-      });
-
-      upgradeButton.addEventListener("click", () => {
-        if (!selectedPlayer) {
-          alert("선수를 선택해주세요.");
-          return;
-        }
-        if (upgradeLevel < 100) {
-          increaseUpgrade();
-        } else {
-          performUpgrade();
-        }
-      });
-    };
-
-    return { init };
   } catch (error) {
-    console.error("데이터 로드 실패:", error);
+    console.error(error);
+    document.getElementById("message").textContent = error.message;
   }
-})();
-
-window.onload = function () {
-  PlayerUpgrade.then((upgrade) => upgrade.init()); // Promise가 완료된 후 init 호출
 };
+
+const handleUpgrade = async () => {
+  const token = localStorage.getItem("token");
+  const playerSelect = document.getElementById("playerSelect");
+  const selectedPlayerID = playerSelect.value;
+  const selectedPlayer = [...playerSelect.options].find(
+    (option) => option.value === selectedPlayerID
+  );
+
+  if (!selectedPlayer) {
+    alert("선수를 선택해주세요.");
+    return;
+  }
+
+  const powerLevel = parseInt(
+    selectedPlayer.textContent.match(/레벨: (\d+)/)[1]
+  );
+
+  try {
+    const result = await upgradePlayer(selectedPlayerID, powerLevel, token);
+    document.getElementById("message").textContent = result.message;
+    setTimeout(() => {
+      location.reload();
+    }, 1000);
+  } catch (error) {
+    console.error(error);
+    document.getElementById("message").textContent = error.message;
+  }
+};
+
+window.addEventListener("section-upgrade", async () => {
+  await populatePlayerSelect();
+});
+
+document
+  .getElementById("upgradeButton")
+  .addEventListener("click", handleUpgrade);
