@@ -6,6 +6,7 @@
     <title>Futsal Online</title>
     <link rel="stylesheet" href="./css/index.css" />
     <link rel="stylesheet" href="./css/upgrade.css" />
+    <link rel="stylesheet" href="./css/myteam.css" />
   </head>
   <body>
     <header>
@@ -20,12 +21,16 @@
           <a href="#players" onclick="showSection('players')">선수 목록</a>
         </li>
         <li>
+          <a href="#myteam" onclick="showSection('myteam')">내 팀 설정</a>
+        </li>
+        <li>
           <a href="#upgrade" onclick="showSection('upgrade')">선수 강화</a>
         </li>
         <li><a href="#shop" onclick="showSection('shop')">상점</a></li>
         <li><a onclick="logout()">로그아웃</a></li>
       </ul>
     </nav>
+    <!-- HTML 구조 수정본 -->
     <div class="container">
       <section id="players" class="content" style="display: none">
         <h2>선수 목록</h2>
@@ -45,22 +50,46 @@
         </div>
       </section>
 
-      <section id="upgrade" class="content" style="display: none">
-        <h2>선수 강화</h2>
-        <div class="upgrade-section">
-          <div class="upgrade-card">
-            <h3>선수 선택</h3>
-            <select id="playerSelect">
-              <option value="">선수를 선택하세요</option>
-            </select>
-            <div class="gauge-container">
-              <div id="upgradeGauge"></div>
+      <section id="myteam" class="content" style="display: none">
+        <h2>내 팀 설정</h2>
+        <div class="myteam-section">
+          <div class="myteam-card-parent">
+            <div class="myteam-card" id="myteam-1"></div>
+            <div class="myteam-card" id="myteam-2"></div>
+            <div class="myteam-card" id="myteam-3"></div>
+          </div>
+          <div style="padding-top: 50px; display: flex">
+            <div style="flex: 1; height: 30px; width: 50%">
+              <button id="registerTeamBtn" style="width: 50%; margin: 0 40%">
+                선수 추가
+              </button>
             </div>
-            <button id="upgradeButton">강화하기</button>
-            <p id="upgradeResult"></p>
+            <div style="flex: 1">
+              <button id="deleteTeam" style="width: 50%; margin: 0">
+                선수 삭제
+              </button>
+            </div>
           </div>
         </div>
+
+        <div id="popup-overlay"></div>
+        <div id="team-popup">
+          <p id="selectedTeam" style="color: #2d3748"></p>
+          <h2>팀 선택</h2>
+          <ul id="team-list"></ul>
+          <button id="closePopup">닫기</button>
+        </div>
       </section>
+
+      <section id="upgrade" class="content" style="display: none">
+        <div id="upgrade-section">
+          <h1>선수 강화</h1>
+          <select id="playerSelect"></select>
+          <button id="upgradeButton">강화하기</button>
+          <div id="message"></div>
+        </div>
+      </section>
+
       <section id="shop" class="content" style="display: none">
         <div style="text-align: left">
           <div class="cash_child">
@@ -80,18 +109,21 @@
             <button id="buyPlayerPack">구매하기</button>
           </div>
           <!-- 모달 -->
-        <div id="playerCardModal" class="modal">
+          <div id="playerCardModal" class="modal">
             <div class="modal-content">
               <span class="close">&times;</span>
               <h2 id="playerCardName"></h2>
               <p>축하합니다! 위 선수를 획득하셨습니다.</p>
             </div>
+          </div>
         </div>
       </section>
     </div>
+
     <script src="./js/index.js"></script>
     <script src="./js/players.js"></script>
     <script src="./js/upgrade.js"></script>
     <script src="./js/shop.js"></script>
+    <script src="./js/myteam.js"></script>
   </body>
 </html>
