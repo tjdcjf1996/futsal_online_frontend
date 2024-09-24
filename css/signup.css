@@ -2,7 +2,9 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #1a202c;
+  background-image: url("../assets/background.png");
+  background-position: center;
+  background-size: cover;
   color: #ffffff;
   display: flex;
   justify-content: center;
