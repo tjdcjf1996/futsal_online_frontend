@@ -52,7 +52,15 @@ window.addEventListener("section-players", async function () {
     });
 
     // 모든 fetch가 완료되면 결과를 받아 처리
-    const playersWithDetails = await Promise.all(playerDetailsPromises);
+    let playersWithDetails = await Promise.all(playerDetailsPromises);
+    console.log(playersWithDetails);
+    playersWithDetails.sort((a, b) => {
+      const nameComparison = a.playerName.localeCompare(b.playerName);
+      if (nameComparison === 0) {
+        return b.powerLevel - a.powerLevel; // 내림차순으로 정렬
+      }
+      return nameComparison;
+    });
 
     // 선수 목록 생성
     playersWithDetails.forEach((player) => {
