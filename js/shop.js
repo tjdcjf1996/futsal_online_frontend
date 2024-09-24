@@ -2,7 +2,7 @@ const token = localStorage.getItem("token");
 const buyPlayerPack = document.getElementById("buyPlayerPack");
 let chargeWindow = null;
 
-window.addEventListener("DOMContentLoaded", async function () {
+window.addEventListener("section-shop", async function () {
   const cashBalance = document.getElementById("cashBalance");
   const cashFetch = await fetch(`http://localhost:8282/api/user/cash`, {
     method: "GET",

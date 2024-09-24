@@ -24,6 +24,11 @@ function showSection(sectionId) {
 
   // 선택한 섹션을 localStorage에 저장
   localStorage.setItem("lastSection", sectionId);
+
+  const event = new CustomEvent(`section-${sectionId}`, {
+    detail: { sectionId },
+  });
+  window.dispatchEvent(event); // window나 특정 요소에서 이벤트 발생시킴
 }
 
 // 로그아웃 처리

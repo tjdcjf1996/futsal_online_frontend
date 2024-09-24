@@ -1,4 +1,4 @@
-window.addEventListener("DOMContentLoaded", async function () {
+window.addEventListener("section-players", async function () {
   const token = localStorage.getItem("token");
   const userID = localStorage.getItem("userID");
 
