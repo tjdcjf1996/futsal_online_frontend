@@ -28,6 +28,17 @@ document
         return response.json();
       })
       .then((data) => {
+        const setLocalStorageTimer = (key, value, time) => {
+          let now = new Date();
+          let item = {
+            value: value,
+            expireTime: now.getTime() + time,
+          };
+
+          localStorage.setItem(key, JSON.stringify(item));
+        };
+
+        // setLocalStorageTimer("token", data.token, 30000);
         localStorage.setItem("token", data.token);
         localStorage.setItem("userID", data.userID);
         localStorage.setItem("name", data.name);

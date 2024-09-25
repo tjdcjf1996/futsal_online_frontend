@@ -18,6 +18,9 @@
       <a style="position: absolute" id="welcome"></a>
       <ul>
         <li>
+          <a href="#gameStart" onclick="showSection('gameStart')">게임 시작</a>
+        </li>
+        <li>
           <a href="#players" onclick="showSection('players')">선수 목록</a>
         </li>
         <li>
@@ -46,6 +49,38 @@
             <p id="modalPlayerShootPower"></p>
             <p id="modalPlayerDefense"></p>
             <p id="modalPlayerStamina"></p>
+          </div>
+        </div>
+      </section>
+
+      <section id="gameStart" class="content" style="display: none">
+        <div class="container">
+          <h1>랜덤 플레이 게임</h1>
+          <button id="startGameBtn">게임 시작</button>
+
+          <div id="loading" class="hidden">
+            <img src="./assets/futsal.gif" />
+          </div>
+          <div id="result" class="hidden">
+            <h2 id="resultMessage"></h2>
+          </div>
+          <br />
+          <br />
+          <div id="rankingDiv" class="ranking-container hidden">
+            <table id="rankingTable">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Name</th>
+                  <th>Score</th>
+                  <th>Win</th>
+                  <th>Draw</th>
+                  <th>Loss</th>
+                  <th>Win Rate</th>
+                </tr>
+              </thead>
+              <tbody id="rankingBody"></tbody>
+            </table>
           </div>
         </div>
       </section>
@@ -125,5 +160,6 @@
     <script src="./js/upgrade.js"></script>
     <script src="./js/shop.js"></script>
     <script src="./js/myteam.js"></script>
+    <script src="./js/gameStart.js"></script>
   </body>
 </html>

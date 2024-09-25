@@ -135,3 +135,65 @@ button:hover {
   display: inline-block;
   padding-right: 10px;
 }
+
+#result {
+  text-align: center;
+}
+#loading {
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#result {
+  margin-top: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+#ranking-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #2d3748;
+  color: #ffffff;
+  border-radius: 8px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 12px 15px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+tr {
+  transition: background-color 0.3s;
+}
+
+tr:hover {
+  background-color: #4a5568;
+}
+
+tr.highlight {
+  border: 2px solid red;
+}
+
+tr.gold {
+  background-color: gold;
+}
+
+tr.silver {
+  background-color: silver;
+}
+
+tr.bronze {
+  background-color: brown;
+}

@@ -31,6 +31,7 @@ async function initializeMyTeam() {
       {
         method: "GET",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `${token}`,
         },
       }
@@ -150,9 +151,7 @@ async function addPlayerToTeam(player) {
         powerLevel: player.powerLevel,
       }),
     });
-
     const data = await response.json();
-
     if (!response.ok) {
       throw new Error(data.errorMessage || "선수 추가에 실패했습니다.");
     }
@@ -225,10 +224,10 @@ window.addEventListener("click", (event) => {
   }
 });
 
-// 페이지 로드 시 초기화
-document.addEventListener("DOMContentLoaded", () => {
-  initializeMyTeam();
-});
+// // 페이지 로드 시 초기화
+// document.addEventListener("DOMContentLoaded", () => {
+//   initializeMyTeam();
+// });
 
 // 섹션 변경 이벤트 리스너
 window.addEventListener("section-myteam", initializeMyTeam);
